@@ -7,7 +7,7 @@ terraform {
 }
 locals {
   installer_workspace     = "${path.root}/installer-files"
-  openshift_installer_url = "${var.openshift_installer_url}/${var.openshift_version}"
+  openshift_installer_url = "${var.openshift_installer_url}/${var.openshift_version}/"
   cluster_nr              = element(split("-", "${var.cluster_id}"), 1)
 }
 
@@ -26,10 +26,10 @@ case $(uname -s) in
     tar zxvf ${local.installer_workspace}/openshift-install-mac-4*.tar.gz -C ${local.installer_workspace}
     wget -r -l1 -np -nd -q ${local.openshift_installer_url} -P ${local.installer_workspace} -A 'openshift-client-mac-4*.tar.gz'
     tar zxvf ${local.installer_workspace}/openshift-client-mac-4*.tar.gz -C ${local.installer_workspace}
-    wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-osx-amd64 -O ${local.installer_workspace}/jq > /dev/null 2>&1\
+    wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-osx-amd64 -O ${local.installer_workspace}/jq > /dev/null 2>&1
     ;;
   Linux)
-    wget -r -l1 -np -nd -q ${local.installer_workspace} -P ${local.installer_workspace} -A 'openshift-install-linux-4*.tar.gz'
+    wget -r -l1 -np -nd -q ${local.openshift_installer_url} -P ${local.installer_workspace} -A 'openshift-install-linux-4*.tar.gz'
     tar zxvf ${local.installer_workspace}/openshift-install-linux-4*.tar.gz -C ${local.installer_workspace}
     wget -r -l1 -np -nd -q ${local.openshift_installer_url} -P ${local.installer_workspace} -A 'openshift-client-linux-4*.tar.gz'
     tar zxvf ${local.installer_workspace}/openshift-client-linux-4*.tar.gz -C ${local.installer_workspace}
@@ -69,6 +69,9 @@ resource "null_resource" "generate_manifests" {
   ]
 
   provisioner "local-exec" {
+    environment = {
+      GOOGLE_APPLICATION_CREDENTIALS = "./${var.gcp_service_account}"
+    }
     command = <<EOF
 ${local.installer_workspace}/openshift-install --dir=${local.installer_workspace} create manifests
 rm ${local.installer_workspace}/openshift/99_openshift-cluster-api_worker-machineset-*

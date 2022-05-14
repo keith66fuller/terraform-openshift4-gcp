@@ -111,3 +111,8 @@ variable "airgapped" {
     repository = ""
   }
 }
+
+variable "gcp_service_account" {
+  description = "Name of JSON file in current directory for GCP service account public key."
+  type = string
+}

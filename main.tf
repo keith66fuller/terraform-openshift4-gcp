@@ -94,6 +94,8 @@ module "ignition" {
   airgapped                   = var.airgapped
   serviceaccount_encoded      = chomp(base64encode(file(var.gcp_service_account)))
   openshift_version           = var.openshift_version
+  gcp_service_account         = var.gcp_service_account
+
 }
 
 module "bootstrap" {
