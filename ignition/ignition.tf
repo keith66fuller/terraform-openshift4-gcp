@@ -1,3 +1,10 @@
+terraform {
+  required_providers {
+    ignition = {
+      source = "community-terraform-providers/ignition"
+    }
+  }
+}
 locals {
   installer_workspace     = "${path.root}/installer-files"
   openshift_installer_url = "${var.openshift_installer_url}/${var.openshift_version}"
