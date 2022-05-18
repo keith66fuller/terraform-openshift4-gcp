@@ -1,0 +1,21 @@
+gcloud projects create kif-ocp-cluster --set-as-default
+
+gcloud compute project-info add-metadata --metadata google-compute-default-region=us-central1,google-compute-default-zone=us-central1-f
+
+gcloud services enable  cloudapis.googleapis.com cloudresourcemanager.googleapis.com dns.googleapis.com iamcredentials.googleapis.com iam.googleapis.com servicemanagement.googleapis.com serviceusage.googleapis.com storage-api.googleapis.com storage-component.googleapis.com
+
+gcloud dns managed-zones create gcp-keithfuller-net  --description="Personal DNS Subdomain"     --dns-name=gcp.keithfuller.net     --visibility=public
+
+gcloud iam service-account create ocpClusterSa
+
+
+gcloud projects add-iam-policy-binding kif-ocp-cluster --member='ocpClusterSa@kif-ocp-cluster.iam.gserviceaccount.com'  --role='roles/compute.instanceAdmin' 
+gcloud projects add-iam-policy-binding kif-ocp-cluster --member='ocpClusterSa@kif-ocp-cluster.iam.gserviceaccount.com'  --role='roles/compute.networkAdmin' 
+gcloud projects add-iam-policy-binding kif-ocp-cluster --member='ocpClusterSa@kif-ocp-cluster.iam.gserviceaccount.com'  --role='roles/compute.securityAdmin' 
+gcloud projects add-iam-policy-binding kif-ocp-cluster --member='ocpClusterSa@kif-ocp-cluster.iam.gserviceaccount.com'  --role='roles/storage.admin' 
+gcloud projects add-iam-policy-binding kif-ocp-cluster --member='ocpClusterSa@kif-ocp-cluster.iam.gserviceaccount.com'  --role='roles/iam.serviceAccountUser' 
+gcloud projects add-iam-policy-binding kif-ocp-cluster --member='ocpClusterSa@kif-ocp-cluster.iam.gserviceaccount.com'  --role='roles/compute.viewer' 
+gcloud projects add-iam-policy-binding kif-ocp-cluster --member='ocpClusterSa@kif-ocp-cluster.iam.gserviceaccount.com'  --role='roles/storage.admin'
+
+
+gcloud iam service-account keys create ocpClusterSa.json --iam-account=ocpClusterSa
