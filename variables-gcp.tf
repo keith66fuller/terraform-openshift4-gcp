@@ -95,7 +95,7 @@ variable "gcp_infra_os_disk_size" {
 variable "gcp_image_uri" {
   type        = string
   description = "Image for all nodes."
-  default     = "https://storage.googleapis.com/rhcos/rhcos/42.80.20191002.0.tar.gz"
+  default     = "https://storage.googleapis.com/rhcos/rhcos/rhcos-410-84-202201050146-0-gcp-x86-64.tar.gz"
 }
 
 variable "gcp_public_dns_zone_name" {
